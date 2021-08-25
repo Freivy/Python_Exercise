@@ -2,11 +2,12 @@
 from sklearn import metrics
 from tensorflow.keras.models import *
 from tensorflow.keras.layers import *
-from keras import initializers
-from keras import backend as K
-from keras.callbacks import EarlyStopping, ModelCheckpoint
 import tensorflow as tf
-import Data_Genarate
+from tf.keras import initializers
+from tf.keras import backend as K
+from tf.keras.callbacks import EarlyStopping, ModelCheckpoint
+import tensorflow as tf
+from Data_genrate import DataGen
 
 
 class AttentionLayer(Layer):
@@ -170,11 +171,11 @@ def myauc(y_true, y_pred):
 
 
 if __name__ == '__main__':
-    data = Data_Genarate()
+    data = DataGen()
     train_in_dense, test_in_dense, train_in_sparse, test_in_sparse, train_data_out, test_data_out = data.data_padding()
     dense_feats_all = data.dense_feats + data.dense_norm_feats + data.sparse_onehot_feats
-    deepchoice = DeepChoice(data.sparse_feats, data.sparse_feat_dict, dense_feats_all)
-    model = deepchoice.build_model() #model.summary()
+    deep_choice = DeepChoice(data.sparse_feats, data.sparse_feat_dict, dense_feats_all)
+    model = deep_choice.build_model()  # model.summary()
     model.compile(loss=MyCrossentropy(), optimizer='adam', metrics=['acc'], run_eagerly=True)  # 多分类并不适合用auc
 
     batch_size = 256
